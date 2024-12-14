@@ -41,5 +41,5 @@ const Image = () => {
   );
 };
 
-export default swiperImage;
+export default slideCards;
 

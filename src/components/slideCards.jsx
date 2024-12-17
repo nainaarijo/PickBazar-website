@@ -1,11 +1,10 @@
-import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const Image = () => {
+const SlideCards = () => {
   const images = [
     "https://pickbazar-react-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F902%2Foffer-5.png&w=640&q=75",
     "https://pickbazar-react-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F903%2Foffer-4.png&w=640&q=75",
@@ -25,7 +24,7 @@ const Image = () => {
         768: { slidesPerView: 3 },
         1024: { slidesPerView: 4 },
       }}
-      className="py-4"
+      className="py-4 container-fluid"
     >
       {images.map((image, index) => (
         <SwiperSlide key={index}>
@@ -41,5 +40,5 @@ const Image = () => {
   );
 };
 
-export default slideCards;
+export default SlideCards;
 

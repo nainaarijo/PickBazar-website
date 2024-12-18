@@ -16,3 +16,29 @@ function App() {
 
 export default App;
 
+// import React, { useState, useEffect } from "react";
+// import ProductList from "./components/Product/ProductList";
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import axios from "axios";
+
+// const App = () => {
+//   const [products, setProducts] = useState([]);
+
+//   useEffect(() => {
+//     // API call
+//     axios.get("https://fakestoreapi.com/products").then((res) => {
+//       setProducts(res.data);
+//     });
+//   }, []);
+
+//   return (
+//     <div className="container mt-4">
+//       <h2 className="text-center mb-4">Product Listing</h2>
+//       <ProductList products={products} />
+//     </div>
+//   );
+// };
+
+// export default App;
+
+

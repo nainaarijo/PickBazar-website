@@ -1,20 +1,15 @@
-import * as React from 'react';
-import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import { useSpring, animated } from '@react-spring/web';
+import React from "react";
+import Backdrop from "@mui/material/Backdrop";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { useSpring, animated } from "@react-spring/web";
+import { someFunction } from '@react-spring/web';
 
 const Fade = React.forwardRef(function Fade(props, ref) {
-  const {
-    children,
-    in: open,
-    onEnter,
-    onExited,
-    ...other
-  } = props;
+  const { children, in: open, onEnter, onExited, ...other } = props;
   const style = useSpring({
     from: { opacity: 0 },
     to: { opacity: open ? 1 : 0 },
@@ -34,26 +29,21 @@ const Fade = React.forwardRef(function Fade(props, ref) {
 });
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
+  bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
   borderRadius: 2,
 };
 
-export default function LoginRegisterModal() {
-  const [openLogin, setOpenLogin] = React.useState(false);
+const LoginRegisterModal = ({ openLogin, setOpenLogin }) => {
   const [openRegister, setOpenRegister] = React.useState(false);
 
-  // Login Modal
-  const handleOpenLogin = () => setOpenLogin(true);
-  const handleCloseLogin = () => setOpenLogin(false);
-
-  // Register Modal
+  // Switch Between Login and Register Modal
   const handleOpenRegister = () => {
     setOpenLogin(false); // Close Login modal first
     setOpenRegister(true);
@@ -61,16 +51,11 @@ export default function LoginRegisterModal() {
   const handleCloseRegister = () => setOpenRegister(false);
 
   return (
-    <div>
-      {/* Login Button */}
-      <Button variant="contained" color="success" onClick={handleOpenLogin}>
-        Login
-      </Button>
-
+    <>
       {/* Login Modal */}
       <Modal
         open={openLogin}
-        onClose={handleCloseLogin}
+        onClose={() => setOpenLogin(false)}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{ timeout: 500 }}
@@ -96,7 +81,7 @@ export default function LoginRegisterModal() {
               Login
             </Button>
             <Typography align="center" sx={{ mt: 2 }}>
-              Don't have an account?{' '}
+              Don't have an account?{" "}
               <Button onClick={handleOpenRegister}>Register</Button>
             </Typography>
           </Box>
@@ -133,12 +118,14 @@ export default function LoginRegisterModal() {
               Register
             </Button>
             <Typography align="center" sx={{ mt: 2 }}>
-              Already have an account?{' '}
-              <Button onClick={handleOpenLogin}>Login</Button>
+              Already have an account?{" "}
+              <Button onClick={() => setOpenLogin(true)}>Login</Button>
             </Typography>
           </Box>
         </Fade>
       </Modal>
-    </div>
+    </>
   );
-}
+};
+
+export default LoginRegisterModal;

@@ -5,8 +5,8 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useSpring, animated } from "@react-spring/web";
-import { someFunction } from '@react-spring/web';
+import { useSpring, animated } from '@react-spring/core';
+
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const { children, in: open, onEnter, onExited, ...other } = props;
@@ -43,16 +43,16 @@ const style = {
 const LoginRegisterModal = ({ openLogin, setOpenLogin }) => {
   const [openRegister, setOpenRegister] = React.useState(false);
 
-  // Switch Between Login and Register Modal
+
   const handleOpenRegister = () => {
-    setOpenLogin(false); // Close Login modal first
+    setOpenLogin(false); 
     setOpenRegister(true);
   };
   const handleCloseRegister = () => setOpenRegister(false);
 
   return (
     <>
-      {/* Login Modal */}
+    
       <Modal
         open={openLogin}
         onClose={() => setOpenLogin(false)}
@@ -88,7 +88,7 @@ const LoginRegisterModal = ({ openLogin, setOpenLogin }) => {
         </Fade>
       </Modal>
 
-      {/* Register Modal */}
+     
       <Modal
         open={openRegister}
         onClose={handleCloseRegister}

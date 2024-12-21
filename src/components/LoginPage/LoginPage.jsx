@@ -5,7 +5,8 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useSpring, animated } from '@react-spring/core';
+
+import { useSpring, animated } from '@react-spring/web';
 
 
 const Fade = React.forwardRef(function Fade(props, ref) {

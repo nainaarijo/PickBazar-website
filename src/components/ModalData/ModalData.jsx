@@ -44,7 +44,7 @@ export default function RightDrawer() {
 
     return (
         <div>
-            {/* Button to toggle Drawer */}
+  
             <Button
                 onClick={toggleDrawer(true)}
                 style={{

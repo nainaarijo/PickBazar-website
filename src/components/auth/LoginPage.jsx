@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Box, Typography, TextField, Button, Link, Stack } from "@mui/material";
 import logo from "../../assests/Logo.png";
 
-// Modal Styling
+
 const modalStyle = {
   position: "absolute",
   top: "50%",

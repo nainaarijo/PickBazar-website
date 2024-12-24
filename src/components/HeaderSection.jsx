@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -10,7 +10,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AppleIcon from '@mui/icons-material/Apple';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import logo from "../assests/Logo.png";
-import AuthModal from './auth/LoginPage';  // Correct default import
+import AuthModal from './auth/LoginPage';  
 import SearchIcon from '@mui/icons-material/Search';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -37,6 +37,15 @@ const HeaderSection = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [showSearch, setShowSearch] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const user = localStorage.getItem('user');
+    if (user) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
@@ -47,10 +56,21 @@ const HeaderSection = () => {
     console.log("Searching for:", e.target.value);
   };
 
+  const handleLogin = (email) => {
+    // Save user data in localStorage
+    localStorage.setItem('user', JSON.stringify({ email }));
+    setIsLoggedIn(true);
+    setOpenModal(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setIsLoggedIn(false);
+  };
+
   return (
     <AppBar position="sticky" color="default" elevation={0} className="py-2">
       <Toolbar>
-        {/* Logo */}
         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
           <img src={logo} alt="PickBazar Logo" style={{ height: 40, marginRight: 8 }} />
           <Typography
@@ -75,7 +95,6 @@ const HeaderSection = () => {
           </Box>
         </Box>
 
-        {/* Page Links */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
           <Button color="inherit">Shops</Button>
           <Button color="inherit">Offers</Button>
@@ -90,7 +109,6 @@ const HeaderSection = () => {
           </Menu>
         </Box>
 
-        {/* Search Button with Conditional Input */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <IconButton onClick={toggleSearch} color="inherit">
             <SearchIcon />
@@ -108,27 +126,38 @@ const HeaderSection = () => {
           )}
         </Box>
 
-        {/* Action Buttons */}
         <Box sx={{ display: 'flex', gap: 1 }}>
-          <Button
-            sx={{
-              textTransform: 'none',
-              background: '#019376',
-              color: 'white',
-              display: { xs: 'none', md: 'flex' },
-              '&:hover': { background: '#017a5f' },
-            }}
-            variant="contained"
-            onClick={handleOpenModal}
-          >
-            Join
-          </Button>
+          {!isLoggedIn ? (
+            <Button
+              sx={{
+                textTransform: 'none',
+                background: '#019376',
+                color: 'white',
+                display: { xs: 'none', md: 'flex' },
+                '&:hover': { background: '#017a5f' },
+              }}
+              variant="contained"
+              onClick={handleOpenModal}
+            >
+              Join
+            </Button>
+          ) : (
+            <Box>
+              <img
+                src="https://via.placeholder.com/40"
+                alt="Profile Avatar"
+                style={{ borderRadius: '50%', cursor: 'pointer' }}
+                onClick={handleLogout}
+              />
+            </Box>
+          )}
 
           <AuthModal
             openModal={openModal}
             setOpenModal={setOpenModal}
             isRegister={isRegister}
             setIsRegister={setIsRegister}
+            handleLogin={handleLogin} // Pass handleLogin to AuthModal
           />
           <Button
             variant="contained"

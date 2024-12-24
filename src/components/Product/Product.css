@@ -1,3 +1,90 @@
 .product-img:hover{
     scale: 1.2;
 }
+
+
+
+
+#login-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+
+
+
+  .app-container {
+    display: flex;
+  }
+  
+  .drawer {
+    width: 250px;
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+  }
+  
+  .drawer ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .drawer li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .drawer li:hover, .drawer li.active {
+    background-color: #e0e0e0;
+    font-weight: bold;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  .card button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .card button:hover {
+    background-color: #218838;
+  }
+  
+  
+  

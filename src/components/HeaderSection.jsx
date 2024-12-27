@@ -9,8 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AppleIcon from '@mui/icons-material/Apple';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import logo from "../assests/Logo.png";
-import AuthModal from './auth/LoginPage';  
+import logo from "../assests/Logo.png"; 
+import AuthModal from './auth/LoginPage';
 import SearchIcon from '@mui/icons-material/Search';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,7 +27,7 @@ const SearchBox = styled('div')({
   maxWidth: '400px',
 });
 
-const SearchInput = styled(InputBase)({
+const SearchInput = styled(InputBase)( {
   marginLeft: '10px',
   flex: 1,
 });
@@ -38,11 +38,11 @@ const HeaderSection = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [showSearch, setShowSearch] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [user, setUser] = useState(null); 
   useEffect(() => {
-    // Check if user is already logged in
-    const user = localStorage.getItem('user');
-    if (user) {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); 
       setIsLoggedIn(true);
     }
   }, []);
@@ -57,14 +57,16 @@ const HeaderSection = () => {
   };
 
   const handleLogin = (email) => {
-    // Save user data in localStorage
-    localStorage.setItem('user', JSON.stringify({ email }));
+    const userData = { email };
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser(userData); 
     setIsLoggedIn(true);
     setOpenModal(false);
   };
 
   const handleLogout = () => {
     localStorage.removeItem('user');
+    setUser(null); 
     setIsLoggedIn(false);
   };
 
@@ -72,14 +74,9 @@ const HeaderSection = () => {
     <AppBar position="sticky" color="default" elevation={0} className="py-2">
       <Toolbar>
         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+         
           <img src={logo} alt="PickBazar Logo" style={{ height: 40, marginRight: 8 }} />
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ fontWeight: 'bold', color: '#333', marginRight: '20px' }}
-          >
-            PickBazar
-          </Typography>
+        
           <Box>
             <Button
               sx={{
@@ -107,27 +104,18 @@ const HeaderSection = () => {
             <MenuItem onClick={handleMenuClose}>Page 2</MenuItem>
             <MenuItem onClick={handleMenuClose}>Page 3</MenuItem>
           </Menu>
-        </Box>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <IconButton onClick={toggleSearch} color="inherit">
             <SearchIcon />
           </IconButton>
-          {showSearch && (
-            <SearchBox>
-              <SearchIcon style={{ color: 'gray' }} />
-              <SearchInput
-                onChange={searchHandler}
-                placeholder="Search items..."
-                size="small"
-                autoFocus
-              />
-            </SearchBox>
-          )}
         </Box>
 
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          {!isLoggedIn ? (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {user ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="body1">{user.email}</Typography>
+              <Button onClick={handleLogout} color="inherit">Logout</Button>
+            </Box>
+          ) : (
             <Button
               sx={{
                 textTransform: 'none',
@@ -141,35 +129,40 @@ const HeaderSection = () => {
             >
               Join
             </Button>
-          ) : (
-            <Box>
-              <img
-                src="https://via.placeholder.com/40"
-                alt="Profile Avatar"
-                style={{ borderRadius: '50%', cursor: 'pointer' }}
-                onClick={handleLogout}
-              />
-            </Box>
           )}
-
-          <AuthModal
-            openModal={openModal}
-            setOpenModal={setOpenModal}
-            isRegister={isRegister}
-            setIsRegister={setIsRegister}
-            handleLogin={handleLogin} // Pass handleLogin to AuthModal
-          />
           <Button
-            variant="contained"
             sx={{
               textTransform: 'none',
               background: '#019376',
-              display: { xs: 'none', sm: 'flex' },
+              color: 'white',
+              display: { xs: 'none', md: 'flex' },
+              '&:hover': { background: '#017a5f' },
             }}
+            variant="contained"
           >
             Become a Seller
           </Button>
         </Box>
+
+        {showSearch && (
+          <SearchBox>
+            <SearchIcon style={{ color: 'gray' }} />
+            <SearchInput
+              onChange={searchHandler}
+              placeholder="Search items..."
+              size="small"
+              autoFocus
+            />
+          </SearchBox>
+        )}
+
+        <AuthModal
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          isRegister={isRegister}
+          setIsRegister={setIsRegister}
+          handleLogin={handleLogin}
+        />
         <ToastContainer />
       </Toolbar>
     </AppBar>

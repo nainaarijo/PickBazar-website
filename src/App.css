@@ -75,8 +75,8 @@
 
 .card-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 cards in a row */
-  gap: 20px; /* Space between cards */
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 20px; 
 }
 
 .card {

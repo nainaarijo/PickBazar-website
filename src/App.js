@@ -1,23 +1,29 @@
 import React from "react";
-import  HeaderSection  from './components/HeaderSection';
+import HeaderSection from "./components/HeaderSection";
 import HeroSection from "./components/HeroSection";
 import SwiperSlide from "./components/SwiperSlide";
 import SideDrawer from "./components/SideDrawer";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Product from "./components/Product/Product";
+import { BrowserRouter as Router } from "react-router-dom"; // Import BrowserRouter
 
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
-    <>
+    <Router> {/* Wrap your components inside Router */}
       <HeaderSection />
       <HeroSection />
       <SwiperSlide />
       <SideDrawer />
-    </>
+      <Product />
+    </Router>
   );
 }
 
 export default App;
+
+
+
 
 
 

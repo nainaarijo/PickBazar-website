@@ -2,12 +2,13 @@ import React from 'react'
 
 import { Outlet } from 'react-router-dom'
 
-import ResponsiveAppBar from '../header'
+
+import HeaderSection from '../HeaderSection'
 
 const Layout = () => {
   return (
     <div>
-        <ResponsiveAppBar />
+        <HeaderSection  />
         <Outlet />
     </div>
   )

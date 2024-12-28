@@ -4,13 +4,12 @@ import HeroSection from "./components/HeroSection";
 import SwiperSlide from "./components/SwiperSlide";
 import SideDrawer from "./components/SideDrawer";
 import Product from "./components/Product/Product";
-import { BrowserRouter as Router } from "react-router-dom"; // Import BrowserRouter
-
+import { BrowserRouter as Router } from "react-router-dom"; 
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
-    <Router> {/* Wrap your components inside Router */}
+    <Router> 
       <HeaderSection />
       <HeroSection />
       <SwiperSlide />

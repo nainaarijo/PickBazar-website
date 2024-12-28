@@ -1,18 +1,18 @@
-import React, { useState } from 'react'; // Import useState from React
-import Box from '@mui/material/Box'; // Import Box from MUI
-import Drawer from '@mui/material/Drawer'; // Import Drawer from MUI
-import Button from '@mui/material/Button'; // Import Button from MUI
-import Typography from '@mui/material/Typography'; // Import Typography from MUI
-import IconButton from '@mui/material/IconButton'; // Import IconButton from MUI
-import { useDispatch, useSelector } from 'react-redux'; // Redux hooks
-import { removeItem, addItem, clearCart } from "../components/slice/Add-Cart/AddCartSlice"; // Redux actions
-import RemoveIcon from '@mui/icons-material/Remove'; // Import RemoveIcon
-import AddIcon from '@mui/icons-material/Add'; // Import AddIcon
+import React, { useState } from 'react'; 
+import Box from '@mui/material/Box'; 
+import Drawer from '@mui/material/Drawer'; 
+import Button from '@mui/material/Button'; 
+import Typography from '@mui/material/Typography'; 
+import IconButton from '@mui/material/IconButton'; 
+import { useDispatch, useSelector } from 'react-redux'; 
+import { removeItem, addItem} from "../components/slice/Add-Cart/AddCartSlice"; 
+import RemoveIcon from '@mui/icons-material/Remove'; 
+import AddIcon from '@mui/icons-material/Add'; 
 
 function PageDrawer() {
-  const { cartitems } = useSelector((state) => state.Cart); // Redux se cart items le rahe hain
+  const { cartitems } = useSelector((state) => state.Cart); 
 
-  // Ensure cartitems has a valid value, default to an empty array if undefined
+ 
   const items = cartitems || [];
 
   const totalPrice = items.reduce(

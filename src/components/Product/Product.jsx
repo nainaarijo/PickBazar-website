@@ -59,6 +59,7 @@ import Cleaning_supply_astonishImg from "../../assests/lays_sea_salted.webp";
 import Cleaning_supply_bonaImg from "../../assests/lotus_biscoff.webp";
 import Cleaning_supply_everImg from "../../assests/m&m_funsize.webp";
 import Cleaning_supply_glitz_steelImg from "../../assests/maggi_bbq.webp";
+import { Drawer, Box } from '@mui/material';
 import {Button, Typography, List, ListItemButton, ListItemText, Card, ListItemIcon, CardContent, Grid, CardMedia, Modal, IconButton, AccordionSummary, AccordionDetails, Accordion, } from '@mui/material'
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import PetsIcon from '@mui/icons-material/Pets';
@@ -66,14 +67,12 @@ import HomeIcon from '@mui/icons-material/Home';
 import LunchDiningIcon from '@mui/icons-material/LunchDining';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 import { useDispatch } from 'react-redux'
-import {addItem } from '../../components/slice/Add-Cart/AddCartSlice';
+// import {Addtocart } from '../../components/slice/Add-Cart/Contact';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TemporaryDrawer from '../../components/SideDrawer';;
-import { Drawer, Box } from '@mui/material';
 
 
-// import { faviratecard } from '../../../Slices/favirate'
 
 
 const dummydata = [
@@ -521,7 +520,7 @@ const Products = () => {
     };
 
 
-    // Categories list
+    
     const categories = [
         { name: 'Fruits & Vegetables', icon: <LocalFloristIcon />, key: 'Fruit' },
         { name: 'Meat', icon: <LunchDiningIcon />, key: 'Meat' },
@@ -533,7 +532,7 @@ const Products = () => {
     const handleCategorySelect = (key) => {
         setSelectedCategory(key);
     };
-    // Function to toggle drawer
+   
     const toggleDrawer = (open) => {
         console.log(`Drawer state: ${open}`);
         setIsDrawerOpen(open);
@@ -550,7 +549,7 @@ const Products = () => {
     };
 
     const handleAddToCart = (product) => {
-        dispatch(Addtocart(product));
+        // dispatch(Addtocart(product));
         alert(`${product.name} added to cart!`);
     };
 
@@ -558,7 +557,7 @@ const Products = () => {
         ? dummydata.filter((product) => product.category === selectedCategory)
         : dummydata;
 
-    // Function to truncate product names if they are longer than 10 characters
+   
     const truncateName = (name) => {
         return name.length > 10 ? name.slice(0, 10) + '...' : name;
     };
@@ -567,7 +566,7 @@ const Products = () => {
         <Box display="flex" gap={2} sx={{
             marginTop: "5px",
         }}>
-            {/* Sidebar for Category Selection */}
+     
             <Box>
                 <List>
                     {categories.map((category) => (
@@ -797,13 +796,12 @@ const Products = () => {
                     <Typography variant="h6" sx={{ mb: 2 }}>
                         Favorite Items
                     </Typography>
-                    {/* Add content for the drawer here */}
-                    <Typography variant="body2">You can add drawer content here!</Typography>
+                  
+                    <Typography variant="body2">You can add favourite item here!</Typography>
                 </Box>
             </Drawer>
 
-            {/* <Drawer /> */}
-            {/* Button positioned on the left */}
+         
             <TemporaryDrawer show={show} toggleDrawere={toggleDrawere} />
         </Box>
     );

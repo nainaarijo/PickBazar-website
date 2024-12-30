@@ -7,14 +7,13 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import { useDispatch, useSelector } from "react-redux"; // Import useDispatch and useSelector
-import { addItem, removeItem } from "../components/slice/Add-Cart/AddCartSlice"; // Your action creators
+import { useDispatch, useSelector } from "react-redux"; 
+import { addItem, removeItem } from "../components/slice/Add-Cart/AddCartSlice"; 
 
 export default function RightDrawer() {
     const [state, setState] = React.useState(false);
-    const { items } = useSelector(({state}) => state.cart); // Getting cart items from Redux
-    console.log(items, 'items');  // Check if items are being retrieved
-
+    const { items } = useSelector(({state}) => state.cart); 
+    console.log(items, 'items');  
     const dispatch = useDispatch();
 
     const toggleDrawer = (open) => (event) => {
@@ -25,8 +24,8 @@ export default function RightDrawer() {
         setState(open);
     };
 
-    const totalPrice = items.reduce((acc, item) => acc + item.Price * item.quantity, 0); // Calculate total price
-    const totalItems = items.reduce((acc, item) => acc + item.quantity, 0); // Calculate total number of items
+    const totalPrice = items.reduce((acc, item) => acc + item.Price * item.quantity, 0); 
+    const totalItems = items.reduce((acc, item) => acc + item.quantity, 0); 
 
     const list = () => (
         <Box

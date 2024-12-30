@@ -11,7 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 function PageDrawer() {
-  const { items } = useSelector((state) => state.cart); // Safe access
+  const { items } = useSelector((state) => state.cart); 
 
   const totalPrice = items.reduce(
     (acc, item) => acc + (item.Price || 0) * (item.quantity || 0),

@@ -1,14 +1,11 @@
 import React from 'react'
-
 import { Outlet } from 'react-router-dom'
-
-
 import HeaderSection from '../HeaderSection'
 
 const Layout = () => {
   return (
     <div>
-        <HeaderSection  />
+    <HeaderSection/>
         <Outlet />
     </div>
   )

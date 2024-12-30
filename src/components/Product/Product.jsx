@@ -67,10 +67,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import LunchDiningIcon from '@mui/icons-material/LunchDining';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 import { useDispatch } from 'react-redux'
-// import {Addtocart } from '../../components/slice/Add-Cart/Contact';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import TemporaryDrawer from '../../components/SideDrawer';;
+import { addItem } from '../../components/slice/Add-Cart/AddCartSlice'; 
+
 
 
 
@@ -504,309 +504,193 @@ const dummydata = [
     }
 ]
 
+// Dummy data for testing
+
+  
 const Products = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [openModal, setOpenModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(true);
-    const dispatch = useDispatch();
-
-
-
-    const [show, setShow] = React.useState(false);
-
-    const toggleDrawere = (newOpen) => () => {
-        setShow(newOpen);
-    };
-
-
     
+    const dispatch = useDispatch();  // Initialize dispatch
+  
     const categories = [
-        { name: 'Fruits & Vegetables', icon: <LocalFloristIcon />, key: 'Fruit' },
-        { name: 'Meat', icon: <LunchDiningIcon />, key: 'Meat' },
-        { name: 'Snacks', icon: <ShoppingBasketIcon />, key: 'Snacks' },
-        { name: 'Pet Care', icon: <PetsIcon />, key: 'Pet Care' },
-        { name: 'Home & Cleaning', icon: <HomeIcon />, key: 'Home & Cleaning' },
+      { name: "Fruits & Vegetables", icon: <LocalFloristIcon />, key: "Fruit" },
+      { name: "Meat", icon: <LunchDiningIcon />, key: "Meat" },
+      { name: "Snacks", icon: <ShoppingBasketIcon />, key: "Snacks" },
+      { name: "Pet Care", icon: <PetsIcon />, key: "Pet Care" },
+      { name: "Home & Cleaning", icon: <HomeIcon />, key: "Home & Cleaning" },
     ];
-
+  
     const handleCategorySelect = (key) => {
-        setSelectedCategory(key);
+      setSelectedCategory(key);
     };
-   
-    const toggleDrawer = (open) => {
-        console.log(`Drawer state: ${open}`);
-        setIsDrawerOpen(open);
-    };
-
+  
     const handleCardClick = (product) => {
-        setSelectedProduct(product);
-        setOpenModal(true);
+      setSelectedProduct(product);
+      setOpenModal(true);
     };
-
+  
     const handleCloseModal = () => {
-        setOpenModal(false);
-        setSelectedProduct(null);
+      setOpenModal(false);
+      setSelectedProduct(null);
     };
-
+  
+    // Updated handleAddToCart function using Redux
     const handleAddToCart = (product) => {
-        // dispatch(Addtocart(product));
-        alert(`${product.name} added to cart!`);
+      dispatch(addItem(product));  // Dispatches product to Redux store
+      alert(`${product.name} added to cart!`);
     };
-
+  
     const filteredProducts = selectedCategory
-        ? dummydata.filter((product) => product.category === selectedCategory)
-        : dummydata;
-
-   
+      ? dummydata.filter((product) => product.category === selectedCategory)
+      : dummydata;
+  
     const truncateName = (name) => {
-        return name.length > 10 ? name.slice(0, 10) + '...' : name;
+      return name.length > 10 ? name.slice(0, 10) + "..." : name;
     };
-
+  
     return (
-        <Box display="flex" gap={2} sx={{
-            marginTop: "5px",
-        }}>
-     
-            <Box>
-                <List>
-                    {categories.map((category) => (
-                        <Accordion key={category.key} disableGutters elevation={0} square>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls={`${category.key}-content`}
-                                id={`${category.key}-header`}
-                            >
-                                <ListItemIcon>{category.icon}</ListItemIcon>
-                                <ListItemText primary={category.name} />
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <List disablePadding>
-                                    <ListItemButton onClick={() => handleCategorySelect(category.key)}>
-                                        <ListItemText primary={`${category.name}`} />
-                                    </ListItemButton>
-
-                                </List>
-                            </AccordionDetails>
-                        </Accordion>
-                    ))}
-                </List>
-            </Box>
-
-            {/* Product Grid */}
-            <Grid container spacing={2}>
-                {filteredProducts.map((product) => (
-                    <Grid item xs={12} sm={6} md={3} key={product.id}> {/* 4 cards in a row */}
-                        <Card sx={{ border: '1px solid #e0e0e0', borderRadius: '8px', boxShadow: 'none' }}>
-                            {/* Product Image */}
-                            <CardMedia
-                                component="img"
-                                height="180"
-                                image={product.Image}
-                                alt={product.name}
-                                sx={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px', objectFit: 'contain' }}
-                                onClick={() => handleCardClick(product)} // Opens the modal on image click
-                            />
-
-                            {/* Discount Badge */}
-                            <Box
-                                sx={{
-                                    position: 'absolute',
-                                    top: '8px',
-                                    left: '8px',
-                                    backgroundColor: '#FFD700',
-                                    color: 'white',
-                                    borderRadius: '4px',
-                                    padding: '2px 8px',
-                                    fontSize: '12px',
-                                    fontWeight: 'bold',
-                                }}
-                            >
-                                {product.discount ? `${product.discount}% OFF` : ''}
-                            </Box>
-
-                            {/* Card Content */}
-                            <CardContent sx={{ padding: '16px' }}>
-                                <Typography variant="body2" color="text.secondary" sx={{ marginBottom: '4px' }}>
-                                    {product.weight}
-                                </Typography>
-                                <Typography variant="h6" sx={{ fontWeight: 'bold', fontSize: '16px' }}>
-                                    {truncateName(product.name)}
-                                </Typography>
-
-                                {/* Price Section */}
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}>
-                                    {product.oldPrice && (
-                                        <Typography
-                                            variant="body2"
-                                            sx={{
-                                                textDecoration: 'line-through',
-                                                color: '#9e9e9e',
-                                            }}
-                                        >
-                                            ${product.oldPrice.toFixed(2)}
-                                        </Typography>
-                                    )}
-                                    <Typography
-                                        variant="h6"
-                                        sx={{
-                                            fontWeight: 'bold',
-                                            fontSize: '18px',
-                                            color: '#4caf50',
-                                        }}
-                                    >
-                                        ${product.Price.toFixed(2)}
-                                    </Typography>
-                                </Box>
-                            </CardContent>
-
-                            {/* Action Buttons */}
-                            <Box sx={{ display: "flex", justifyContent: "flex-end", padding: "16px" }}>
-                                <Button
-                                    variant="contained"
-                                    size="small"
-                                    sx={{
-                                        backgroundColor: '#4caf50',
-                                        color: 'white',
-                                        textTransform: 'none',
-                                        '&:hover': {
-                                            backgroundColor: '#43a047',
-                                        },
-                                        marginLeft: "auto", // Aligns the button to the right
-                                    }}
-                                    onClick={() => handleAddToCart(product)}
-                                >
-                                    🛒 Cart
-                                </Button>
-                            </Box>
-
-                        </Card>
-
-                    </Grid>
-                ))}
-            </Grid>
-
-            {/* Modal for Product Details */}
-            <Modal open={openModal} onClose={handleCloseModal}>
-                <Box
-                    sx={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        width: 600,
-                        bgcolor: "background.paper",
-                        boxShadow: 24,
-                        p: 4,
-                        borderRadius: 2,
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: 3,
-                    }}
+      <Box display="flex" gap={2} sx={{ marginTop: "5px" }}>
+        <Box>
+          <List>
+            {categories.map((category) => (
+              <Accordion key={category.key} disableGutters elevation={0} square>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls={`${category.key}-content`}
+                  id={`${category.key}-header`}
                 >
-                    {selectedProduct && (
-                        <>
-                            {/* Product Image */}
-                            <CardMedia
-                                component="img"
-                                image={selectedProduct.Image}
-                                alt={selectedProduct.name}
-                                sx={{
-                                    width: 200,
-                                    height: 200,
-                                    objectFit: "contain",
-                                    borderRadius: 2,
-                                }}
-                            />
-
-                            {/* Product Details */}
-                            <Box sx={{ flex: 1 }}>
-                                <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }}>
-                                    {selectedProduct.name}
-                                </Typography>
-
-                                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                                    {selectedProduct.description ||
-                                        "Discover the perfect addition to your daily needs with our premium-quality product."}
-                                </Typography>
-
-                                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                                    <Typography
-                                        variant="h6"
-                                        sx={{ fontWeight: "bold", color: "primary.main", mr: 1 }}
-                                    >
-                                        ${selectedProduct.Price.toFixed(2)}
-                                    </Typography>
-                                    {selectedProduct.originalPrice && (
-                                        <Typography
-                                            variant="body2"
-                                            sx={{
-                                                textDecoration: "line-through",
-                                                color: "text.secondary",
-                                            }}
-                                        >
-                                            ${selectedProduct.originalPrice.toFixed(2)}
-                                        </Typography>
-                                    )}
-                                </Box>
-
-                                <Typography variant="body2" sx={{ mb: 2 }}>
-                                    {selectedProduct.quantity} pieces available
-                                </Typography>
-
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                    }}
-                                >
-                                  
-                                    {/* <IconButton onClick={() => (dispatch(faviratecard(selectedProduct)))} color="error" >
-                                        <FavoriteIcon />
-                                       
-                                    </IconButton> */}
-
-                                    <Button
-                                        variant="contained"
-                                        startIcon={<AddShoppingCartIcon />}
-                                        onClick={() => handleAddToCart(selectedProduct)}
-                                    >
-                                        Add to Cart
-                                    </Button>
-                                </Box>
-                            </Box>
-                        </>
-                    )}
-                </Box>
-            </Modal>
-
-            {/* Drawer */}
-            <Drawer
-                anchor="left"
-                open={isDrawerOpen}
-                onClose={() => toggleDrawer(false)}
-            >
-                <Box
-                    sx={{
-                        width: 250,
-                        p: 2,
-                    }}
-                    role="presentation"
-                >
-                    <Typography variant="h6" sx={{ mb: 2 }}>
-                        Favorite Items
-                    </Typography>
-                  
-                    <Typography variant="body2">You can add favourite item here!</Typography>
-                </Box>
-            </Drawer>
-
-         
-            <TemporaryDrawer show={show} toggleDrawere={toggleDrawere} />
+                  <ListItemIcon>{category.icon}</ListItemIcon>
+                  <ListItemText primary={category.name} />
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List disablePadding>
+                    <ListItemButton onClick={() => handleCategorySelect(category.key)}>
+                      <ListItemText primary={`${category.name}`} />
+                    </ListItemButton>
+                  </List>
+                </AccordionDetails>
+              </Accordion>
+            ))}
+          </List>
         </Box>
+  
+        <Grid container spacing={2}>
+          {filteredProducts.map((product) => (
+            <Grid item xs={12} sm={6} md={3} key={product.id}>
+              <Card sx={{ border: "1px solid #e0e0e0", borderRadius: "8px", boxShadow: "none" }}>
+                <CardMedia
+                  component="img"
+                  height="180"
+                  image={product.Image}
+                  alt={product.name}
+                  sx={{ borderTopLeftRadius: "8px", borderTopRightRadius: "8px", objectFit: "contain" }}
+                  onClick={() => handleCardClick(product)}
+                />
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "8px",
+                    left: "8px",
+                    backgroundColor: "#FFD700",
+                    color: "white",
+                    borderRadius: "4px",
+                    padding: "2px 8px",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {product.discount ? `${product.discount}% OFF` : ""}
+                </Box>
+                <CardContent sx={{ padding: "16px" }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ marginBottom: "4px" }}>
+                    {product.weight}
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: "bold", fontSize: "16px" }}>
+                    {truncateName(product.name)}
+                  </Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "8px" }}>
+                    {product.oldPrice && (
+                      <Typography variant="body2" sx={{ textDecoration: "line-through", color: "#9e9e9e" }}>
+                        ${product.oldPrice.toFixed(2)}
+                      </Typography>
+                    )}
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: "18px",
+                        color: "#4caf50",
+                      }}
+                    >
+                      ${product.Price.toFixed(2)}
+                    </Typography>
+                  </Box>
+                </CardContent>
+                <Box sx={{ display: "flex", justifyContent: "flex-end", padding: "16px" }}>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{
+                      backgroundColor: "#4caf50",
+                      color: "white",
+                      textTransform: "none",
+                      "&:hover": {
+                        backgroundColor: "#43a047",
+                      },
+                      marginLeft: "auto",
+                    }}
+                    onClick={() => handleAddToCart(product)}  // Updated
+                  >
+                    🛒 Cart
+                  </Button>
+                </Box>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+  
+        {/* Modal */}
+        <Modal open={openModal} onClose={handleCloseModal}>
+          <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 600, bgcolor: "background.paper", boxShadow: 24, p: 4, borderRadius: 2, display: "flex", flexDirection: "row", gap: 3 }}>
+            {selectedProduct && (
+              <>
+                <CardMedia component="img" image={selectedProduct.Image} alt={selectedProduct.name} sx={{ width: 200, height: 200, objectFit: "contain", borderRadius: 2 }} />
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }}>
+                    {selectedProduct.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    {selectedProduct.description || "Discover the perfect addition to your daily needs with our premium-quality product."}
+                  </Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                    <Typography variant="h6" sx={{ fontWeight: "bold", color: "primary.main", mr: 1 }}>
+                      ${selectedProduct.Price.toFixed(2)}
+                    </Typography>
+                    {selectedProduct.originalPrice && (
+                      <Typography variant="body2" sx={{ textDecoration: "line-through", color: "text.secondary" }}>
+                        ${selectedProduct.originalPrice.toFixed(2)}
+                      </Typography>
+                    )}
+                  </Box>
+                  <Typography variant="body2" sx={{ mb: 2 }}>
+                    {selectedProduct.quantity} pieces available
+                  </Typography>
+                  <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <Button variant="contained" startIcon={<AddShoppingCartIcon />} onClick={() => handleAddToCart(selectedProduct)}>
+                      Add to Cart
+                    </Button>
+                  </Box>
+                </Box>
+              </>
+            )}
+          </Box>
+        </Modal>
+      </Box>
     );
-};
-
+  };
 export default Products;
 
 

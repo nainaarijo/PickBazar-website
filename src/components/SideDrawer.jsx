@@ -1,26 +1,24 @@
-import React, { useState } from 'react'; 
-import Box from '@mui/material/Box'; 
-import Drawer from '@mui/material/Drawer'; 
-import Button from '@mui/material/Button'; 
-import Typography from '@mui/material/Typography'; 
-import IconButton from '@mui/material/IconButton'; 
-import { useDispatch, useSelector } from 'react-redux'; 
-import { removeItem, addItem} from "../components/slice/Add-Cart/AddCartSlice"; 
-import RemoveIcon from '@mui/icons-material/Remove'; 
-import AddIcon from '@mui/icons-material/Add'; 
+import React, { useState } from 'react';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeItem, addItem } from "../components/slice/Add-Cart/AddCartSlice";
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 function PageDrawer() {
-  const { cartitems } = useSelector((state) => state.Cart); 
-
- 
-  const items = cartitems || [];
+  const { items } = useSelector((state) => state.cart); // Safe access
 
   const totalPrice = items.reduce(
-    (acc, item) => acc + item.Price * item.quanitity,
+    (acc, item) => acc + (item.Price || 0) * (item.quantity || 0),
     0
   );
 
-  const totalItems = items.reduce((acc, item) => acc + item.quanitity, 0);
+  const totalItems = items.reduce((acc, item) => acc + (item.quantity || 0), 0);
 
   const [state, setState] = useState({
     right: false,
@@ -41,7 +39,7 @@ function PageDrawer() {
     } else {
       setMessage('Your order has been placed successfully!');
     }
-    setTimeout(() => setMessage(''), 3000); 
+    setTimeout(() => setMessage(''), 3000);
   };
 
   const list = (anchor) => (
@@ -61,7 +59,7 @@ function PageDrawer() {
           borderBottom: '1px solid #ddd',
         }}
       >
-        🛒 {totalItems} Items
+        <AddShoppingCartIcon/> {totalItems} Items
       </Typography>
       <Box
         sx={{
@@ -93,7 +91,7 @@ function PageDrawer() {
               <Box>
                 <Typography sx={{ fontWeight: 'bold' }}>{item.name}</Typography>
                 <Typography>${item.Price.toFixed(2)}</Typography>
-                <Typography variant="caption">{item.quanitity} x</Typography>
+                <Typography variant="caption">{item.quantity} x</Typography>
               </Box>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -104,7 +102,7 @@ function PageDrawer() {
               >
                 <RemoveIcon />
               </IconButton>
-              <Typography>{item.quanitity}</Typography>
+              <Typography>{item.quantity}</Typography>
               <IconButton
                 size="small"
                 color="primary"
@@ -168,7 +166,7 @@ function PageDrawer() {
         onClick={toggleDrawer('right', true)}
       >
         <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-          🛒 {totalItems} Items
+        <AddShoppingCartIcon/>  {totalItems} Items
         </Typography>
         <Typography variant="h6">${totalPrice.toFixed(2)}</Typography>
       </Box>

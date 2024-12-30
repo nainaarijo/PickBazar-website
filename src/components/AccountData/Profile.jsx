@@ -217,7 +217,7 @@ const Profile = () => {
 
             }}
           >
-            {/* Contact Number Section */}
+            
             <Box
               sx={{
                 backgroundColor: "#fff",
@@ -256,7 +256,7 @@ const Profile = () => {
               </Box>
             </Box>
 
-            {/* Addresses Section */}
+            
             <Box
               sx={{
                 backgroundColor: "#fff",

@@ -9,30 +9,29 @@ import ProfileDashboard from "./components/AccountData/Profile";
 import UpdateProfilePage from "./components/AccountData/UpdateProfile";
 import Layout from "./components/Layout/Layout";
 
-
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <Layout />, 
     children: [
       {
         path: "",
-        element: <App />,
+        element: <App />, 
       },
       {
-        path: "/ProductDetailsPage/:id",
+        path: "ProductDetailsPage/:id",
         element: <ProductDetailsPage />,
       },
       {
-        path: "account/profile",
+        path: "/profile",
         element: <ProfileDashboard />,
       },
       {
-        path: "/update-password",
+        path: "update-password",
         element: <UpdateProfilePage />,
       },
       {
-        path: "/profile-page",
+        path: "profile-page",
         element: <ProfileDashboard />,
       },
     ],
@@ -45,7 +44,3 @@ root.render(
     <RouterProvider router={router} />
   </Provider>
 );
-
-
-
-

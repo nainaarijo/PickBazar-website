@@ -56,9 +56,9 @@ const  HeaderSection = () => {
         <AppBar position="sticky" color="default" elevation={0} className="py-2">
             <Toolbar>
                 <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-                    <img src={Logo} alt="PickBazar Logo" style={{ height: 40, marginRight: 8 }} />
+                 
                     <Typography
-                        variant="h6"
+                        variant="h4"
                         component="div"
                         onClick={handleNavigateHome} 
                         sx={{ fontWeight: 'bold', color: '#333', marginRight: '20px', cursor: 'pointer' }} 
@@ -111,7 +111,7 @@ const  HeaderSection = () => {
                                     'aria-labelledby': 'basic-button',
                                 }}
                             >
-                                <MenuItem onClick={handleClose}><Link to='AccountData/profile'>Profile</Link> </MenuItem>
+                                <MenuItem onClick={handleClose}><Link to='/profile'>Profile</Link> </MenuItem>
                                 <MenuItem onClick={handleClose}>My account</MenuItem>
                                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
                             </Menu>

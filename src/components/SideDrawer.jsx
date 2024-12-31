@@ -11,18 +11,20 @@ import AddIcon from '@mui/icons-material/Add';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 function PageDrawer() {
-  const { items } = useSelector((state) => state.cart); 
+  const { items } = useSelector((state) => state.cart);
 
-  const totalPrice = items.reduce(
-    (acc, item) => acc + (item.Price || 0) * (item.quantity || 0),
-    0
-  );
+  const totalPrice = items.reduce((acc, item) => {
+    const price = item.Price || 0; 
+    const quantity = item.quantity || 0; 
+    return acc + price * quantity;
+  }, 0);
 
   const totalItems = items.reduce((acc, item) => acc + (item.quantity || 0), 0);
 
   const [state, setState] = useState({
     right: false,
   });
+
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
 
@@ -59,7 +61,7 @@ function PageDrawer() {
           borderBottom: '1px solid #ddd',
         }}
       >
-        <AddShoppingCartIcon/> {totalItems} Items
+        <AddShoppingCartIcon /> {totalItems} Items
       </Typography>
       <Box
         sx={{
@@ -90,7 +92,7 @@ function PageDrawer() {
               />
               <Box>
                 <Typography sx={{ fontWeight: 'bold' }}>{item.name}</Typography>
-                <Typography>${item.Price.toFixed(2)}</Typography>
+                <Typography>${item.Price ? item.Price.toFixed(2) : '0.00'}</Typography>
                 <Typography variant="caption">{item.quantity} x</Typography>
               </Box>
             </Box>
@@ -150,25 +152,58 @@ function PageDrawer() {
     <div>
       <Box
         sx={{
-          position: 'fixed',
-          top: '50%',
-          right: 16,
-          transform: 'translateY(-50%)',
-          backgroundColor: '#00A86B',
-          color: 'white',
-          borderRadius: 4,
-          padding: '8px 16px',
-          textAlign: 'center',
-          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-          cursor: 'pointer',
+          position: "fixed",
+          top: "50%",
+          right: "16px",
+          transform: "translateY(-50%)",
+          backgroundColor: "#00A86B",
+          color: "white",
+          borderRadius: "8px",
+          padding: "6px 10px",
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+          cursor: "pointer",
           zIndex: 1000,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+          width: "90px",
+          height: "90px",
+          gap: "4px",
         }}
-        onClick={toggleDrawer('right', true)}
+        onClick={toggleDrawer("right", true)}
       >
-        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-        <AddShoppingCartIcon/>  {totalItems} Items
+        <AddShoppingCartIcon sx={{ fontSize: 22 }} />
+        <Typography
+          variant="body2"
+          sx={{
+            fontWeight: "bold",
+            fontSize: "13px", 
+          }}
+        >
+          {totalItems} Items
         </Typography>
-        <Typography variant="h6">${totalPrice.toFixed(2)}</Typography>
+
+        <Box
+          sx={{
+            backgroundColor: "white",
+            borderRadius: "4px",
+            padding: "4px 8px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: "14px",
+              color: "#00A86B",
+            }}
+          >
+            ${(totalPrice || 0).toFixed(2)} 
+          </Typography>
+        </Box>
       </Box>
 
       <Drawer

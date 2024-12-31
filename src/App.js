@@ -5,6 +5,7 @@ import SideDrawer from "./components/SideDrawer";
 import Product from "./components/Product/Product";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+
 function App() {
   return (
     <>
@@ -13,6 +14,7 @@ function App() {
       <SwiperSlide />
       <SideDrawer />
       <Product />
+     
     </>
   );
 }

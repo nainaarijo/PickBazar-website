@@ -8,34 +8,34 @@ import ProductDetailsPage from "./components/ProductDetails/ProductDetails";
 import ProfileDashboard from "./components/AccountData/Profile";
 import UpdateProfilePage from "./components/AccountData/UpdateProfile";
 import Layout from "./components/Layout/Layout";
+import ErrorPage from "./components/ErrorPage";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Layout />, 
+    path: "/", 
+    element: <Layout />,
+    errorElement: <ErrorPage />, 
     children: [
       {
-        path: "",
-        element: <App />, 
+        path: "", 
+        element: <App />,
       },
       {
         path: "ProductDetailsPage/:id",
         element: <ProductDetailsPage />,
       },
       {
-        path: "/profile",
+        path: "profile",
         element: <ProfileDashboard />,
       },
       {
         path: "update-password",
         element: <UpdateProfilePage />,
       },
-      {
-        path: "profile-page",
-        element: <ProfileDashboard />,
-      },
     ],
+    errorElement: <ErrorPage />,
   },
+ 
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

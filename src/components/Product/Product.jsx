@@ -60,7 +60,8 @@ import Cleaning_supply_bonaImg from "../../assests/lotus_biscoff.webp";
 import Cleaning_supply_everImg from "../../assests/m&m_funsize.webp";
 import Cleaning_supply_glitz_steelImg from "../../assests/maggi_bbq.webp";
 import { Drawer, Box } from '@mui/material';
-import { Button, Typography, List, ListItemButton, ListItemText, Card, ListItemIcon, CardContent, Grid, CardMedia, Modal, IconButton, AccordionSummary, AccordionDetails, Accordion, } from '@mui/material'
+import { Button, Typography, List, ListItemButton, ListItemText, Card, ListItemIcon, CardContent, Grid, CardMedia, Modal, IconButton, AccordionSummary, AccordionDetails, Accordion, useSe } from '@mui/material'
+import { useSelector } from 'react-redux';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import PetsIcon from '@mui/icons-material/Pets';
 import HomeIcon from '@mui/icons-material/Home';
@@ -504,9 +505,22 @@ const Products = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [openModal, setOpenModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(true);
 
     const dispatch = useDispatch();
+
+    const cartItems = useSelector((state) => state.cart.items);
+
+    const handleAddToCart = (product) => {
+
+        const isProductInCart = cartItems.some((item) => item.id === product.id);
+
+        if (isProductInCart) {
+            alert(`${product.name} is already in the cart!`);
+        } else {
+            dispatch(addItem(product));
+            alert(`${product.name} added to cart!`);
+        }
+    };
 
     const categories = [
         { name: "Fruits & Vegetables", icon: <LocalFloristIcon />, key: "Fruit" },
@@ -528,12 +542,6 @@ const Products = () => {
     const handleCloseModal = () => {
         setOpenModal(false);
         setSelectedProduct(null);
-    };
-
-
-    const handleAddToCart = (product) => {
-        dispatch(addItem(product));
-        alert(`${product.name} added to cart!`);
     };
 
     const filteredProducts = selectedCategory
@@ -573,15 +581,38 @@ const Products = () => {
             <Grid container spacing={2}>
                 {filteredProducts.map((product) => (
                     <Grid item xs={12} sm={6} md={3} key={product.id}>
-                        <Card sx={{ border: "1px solid #e0e0e0", borderRadius: "8px", boxShadow: "none" }}>
+                        <Card
+                            sx={{
+                                border: "1px solid #e0e0e0",
+                                borderRadius: "8px",
+                                boxShadow: "none",
+                                transition: "transform 0.3s, box-shadow 0.3s",
+                                '&:hover': {
+                                    transform: "scale(1.05)",
+                                    boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
+                                    cursor: "pointer",
+                                },
+                            }}
+                        >
                             <CardMedia
                                 component="img"
                                 height="180"
                                 image={product.Image}
                                 alt={product.name}
-                                sx={{ borderTopLeftRadius: "8px", borderTopRightRadius: "8px", objectFit: "contain" }}
+                                sx={{
+                                    borderTopLeftRadius: "8px",
+                                    borderTopRightRadius: "8px",
+                                    objectFit: "contain",
+                                    transition: "transform 0.3s ease-in-out",
+                                    zIndex: 1, 
+                                    '&:hover': {
+                                        transform: "scale(1.1)",
+                                        zIndex: 1, 
+                                    },
+                                }}
                                 onClick={() => handleCardClick(product)}
                             />
+
                             <Box
                                 sx={{
                                     position: "absolute",
@@ -630,186 +661,25 @@ const Products = () => {
                                         backgroundColor: "#00A676",
                                         color: "white",
                                         textTransform: "none",
-                                        "&:hover": {
+                                        '&:hover': {
                                             backgroundColor: "#43a047",
                                         },
                                         marginLeft: "auto",
                                     }}
                                     onClick={() => handleAddToCart(product)}
                                 >
-                                    <AddShoppingCartIcon />  Cart
+                                    <AddShoppingCartIcon /> Cart
                                 </Button>
                             </Box>
                         </Card>
                     </Grid>
                 ))}
             </Grid>
-
-            {/* Modal */}
-            <Modal open={openModal} onClose={handleCloseModal}>
-                <Box
-                    sx={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        width: "80%",
-                        maxWidth: 900,
-                        bgcolor: "#fff",
-                        boxShadow: 24,
-                        p: 4,
-                        borderRadius: 2,
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: 4,
-                    }}
-                >
-                    {selectedProduct && (
-                        <>
-                            
-                            <CardMedia
-                                component="img"
-                                image={selectedProduct.Image}
-                                alt={selectedProduct.name}
-                                sx={{
-                                    width: 300,
-                                    height: "auto",
-                                    objectFit: "contain",
-                                    borderRadius: 2,
-                                }}
-                            />
-
-                           
-                            <Box sx={{ flex: 1 }}>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                        mb: 2,
-                                    }}
-                                >
-                                    <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                                        {selectedProduct.name}
-                                    </Typography>
-                                    <Typography
-                                        sx={{
-                                            bgcolor: "#FFC107",
-                                            color: "#fff",
-                                            fontSize: "0.875rem",
-                                            fontWeight: "bold",
-                                            px: 1.5,
-                                            py: 0.5,
-                                            borderRadius: 1,
-                                        }}
-                                    >
-                                        25%
-                                    </Typography>
-                                </Box>
-                                <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                    sx={{ mb: 2, fontSize: "0.9rem" }}
-                                >
-                                    {selectedProduct.description ||
-                                        "A biscuit is a flour-based baked food product. This article covers the type of biscuit found in Africa, Asia, and Europe, which is typically hard, fla..."}
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    sx={{
-                                        color: "primary.main",
-                                        fontWeight: "bold",
-                                        cursor: "pointer",
-                                        textDecoration: "underline",
-                                        mb: 2,
-                                    }}
-                                >
-                                    Read more
-                                </Typography>
-
-                                <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-                                    <Typography
-                                        variant="h6"
-                                        sx={{ fontWeight: "bold", color: "primary.main", mr: 2 }}
-                                    >
-                                        ${selectedProduct.Price.toFixed(2)}
-                                    </Typography>
-                                    <Typography
-                                        variant="body2"
-                                        sx={{
-                                            textDecoration: "line-through",
-                                            color: "text.secondary",
-                                            fontSize: "0.9rem",
-                                        }}
-                                    >
-                                        ${selectedProduct.originalPrice?.toFixed(2)}
-                                    </Typography>
-                                </Box>
-
-                                <Button
-                                    variant="contained"
-                                    sx={{
-                                        bgcolor: "primary.main",
-                                        color: "#fff",
-                                        fontWeight: "bold",
-                                        textTransform: "none",
-                                        px: 4,
-                                        mb: 2,
-                                        ":hover": { bgcolor: "primary.dark" },
-                                    }}
-                                    onClick={() => handleAddToCart(selectedProduct)}
-                                >
-                                    Add To Shopping Cart
-                                </Button>
-
-                                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                                    50 pieces available
-                                </Typography>
-
-                                <Box sx={{ mt: 4 }}>
-                                    <Typography
-                                        variant="caption"
-                                        sx={{ fontSize: "0.85rem", fontWeight: "bold", color: "text.secondary", mr: 1 }}
-                                    >
-                                        Categories:
-                                    </Typography>
-                                    <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-                                        <Typography
-                                            variant="caption"
-                                            sx={{
-                                                px: 2,
-                                                py: 0.5,
-                                                bgcolor: "#F1F1F1",
-                                                borderRadius: 2,
-                                                fontSize: "0.85rem",
-                                            }}
-                                        >
-                                            snacks
-                                        </Typography>
-                                        <Typography
-                                            variant="caption"
-                                            sx={{
-                                                px: 2,
-                                                py: 0.5,
-                                                bgcolor: "#F1F1F1",
-                                                borderRadius: 2,
-                                                fontSize: "0.85rem",
-                                            }}
-                                        >
-                                            nuts & biscuits
-                                        </Typography>
-                                    </Box>
-                                </Box>
-                            </Box>
-                        </>
-                    )}
-                </Box>
-            </Modal>
-
-
         </Box>
     );
 };
+
+
 export default Products;
 
 

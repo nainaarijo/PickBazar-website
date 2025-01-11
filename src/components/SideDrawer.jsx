@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeItem, addItem } from "../components/slice/Add-Cart/AddCartSlice";
+import { removeItem, addItem, decreaseQuantity } from "../components/slice/Add-Cart/AddCartSlice";
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -46,26 +46,31 @@ function PageDrawer() {
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 400 }}
+      sx={{
+        width: 400,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: '#f9f9f9',
+      }}
       role="presentation"
       onKeyDown={toggleDrawer(anchor, false)}
-      display="flex"
-      flexDirection="column"
     >
       <Typography
         variant="h6"
         sx={{
           padding: '16px',
           textAlign: 'center',
-          backgroundColor: '#f1f1f1',
-          borderBottom: '1px solid #ddd',
+          backgroundColor: '#00A86B',
+          color: 'white',
+          fontWeight: 'bold',
         }}
       >
         <AddShoppingCartIcon /> {totalItems} Items
       </Typography>
       <Box
         sx={{
-          maxHeight: 'calc(100vh - 200px)',
+          flex: 1,
           overflowY: 'auto',
           padding: '16px',
         }}
@@ -78,10 +83,11 @@ function PageDrawer() {
               alignItems: 'center',
               justifyContent: 'space-between',
               marginBottom: '16px',
-              padding: '8px',
+              padding: '16px',
               border: '1px solid #ddd',
               borderRadius: '8px',
               backgroundColor: '#fff',
+              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -91,20 +97,15 @@ function PageDrawer() {
                 style={{ width: '60px', height: '60px', borderRadius: '8px' }}
               />
               <Box>
-                <Typography sx={{ fontWeight: 'bold' }}>{item.name}</Typography>
-                <Typography>${item.Price ? item.Price.toFixed(2) : '0.00'}</Typography>
-                <Typography variant="caption">{item.quantity} x</Typography>
+                <Typography sx={{ fontWeight: 'bold', fontSize: '16px', color: '#333' }}>
+                  {item.name}
+                </Typography>
+                <Typography sx={{ color: '#00A86B', fontSize: '14px' }}>
+                  ${(item.Price * item.quantity).toFixed(2)}
+                </Typography>
               </Box>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <IconButton
-                size="small"
-                color="primary"
-                onClick={() => dispatch(removeItem(item))}
-              >
-                <RemoveIcon />
-              </IconButton>
-              <Typography>{item.quantity}</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
               <IconButton
                 size="small"
                 color="primary"
@@ -112,37 +113,45 @@ function PageDrawer() {
               >
                 <AddIcon />
               </IconButton>
-              <Button
+              <Typography>{item.quantity}</Typography>
+              <IconButton
                 size="small"
-                variant="text"
-                color="error"
-                onClick={() => dispatch(removeItem(item))}
+                color="primary"
+                onClick={() => {
+                  if (item.quantity > 1) {
+                    dispatch(decreaseQuantity(item));
+                  } else {
+                    dispatch(removeItem(item));
+                  }
+                }}
               >
-                ✕
-              </Button>
+                <RemoveIcon />
+              </IconButton>
             </Box>
           </Box>
         ))}
       </Box>
       <Box
         sx={{
-          position: 'sticky',
-          bottom: 0,
           padding: '16px',
           backgroundColor: '#fff',
           borderTop: '1px solid #ddd',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           boxShadow: '0 -2px 8px rgba(0, 0, 0, 0.1)',
-          textAlign: 'center',
         }}
       >
+        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>
+          Total: ${totalPrice.toFixed(2)}
+        </Typography>
         <Button
           variant="contained"
           color="success"
-          fullWidth
-          sx={{ padding: '12px', borderRadius: '8px' }}
+          sx={{ padding: '12px 24px', borderRadius: '8px' }}
           onClick={handleCheckout}
         >
-          Checkout - ${totalPrice.toFixed(2)}
+          Checkout
         </Button>
       </Box>
     </Box>
@@ -178,7 +187,7 @@ function PageDrawer() {
           variant="body2"
           sx={{
             fontWeight: "bold",
-            fontSize: "13px", 
+            fontSize: "13px",
           }}
         >
           {totalItems} Items
@@ -201,7 +210,7 @@ function PageDrawer() {
               color: "#00A86B",
             }}
           >
-            ${(totalPrice || 0).toFixed(2)} 
+            ${(totalPrice || 0).toFixed(2)}
           </Typography>
         </Box>
       </Box>
